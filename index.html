@@ -118,15 +118,16 @@
                 display: block;
             }
             
-            /* ドットナビゲーション */
+            /* ドットナビゲーションのスタイル修正 */
             .slider-dots {
                 display: flex;
                 justify-content: center;
-                flex-wrap: wrap; /* 多数のドットを折り返し表示 */
-                margin: 15px 0;
-                max-width: 80%; /* コンテナの幅を制限 */
+                flex-wrap: wrap;
+                margin: 15px 0 25px; /* 下部のマージンを増やして番号用のスペースを確保 */
+                max-width: 80%;
                 margin-left: auto;
                 margin-right: auto;
+                position: relative; /* 子要素の配置の基準点 */
             }
 
             .dot {
@@ -134,13 +135,26 @@
                 height: 7px;
                 border-radius: 50%;
                 background-color: #ccc;
-                margin: 0 5px 5px 0; /* 下部にもマージンを追加 */
+                margin: 0 5px 5px 0;
                 cursor: pointer;
                 transition: background-color 0.3s;
+                position: relative; /* 番号を配置するための基準点 */
             }
-            
+
             .dot.active {
                 background-color: #0052a4;
+            }
+
+            /* スライド番号のスタイル */
+            .dot-number {
+                position: absolute;
+                top: 100%; /* ドットの下に配置 */
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 8px;
+                color: #666;
+                margin-top: 3px;
+                white-space: nowrap;
             }
             
             /* 検索バー */
@@ -281,60 +295,31 @@
                 height: auto;
                 box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             }
-            
-            /* コレクションブロック */
-            .collection-block {
-                margin: 0px 0px 30px;
+        
+            .brand-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); /* 2カラム */
+                gap: 15px;
+                /* margin: 0 0px; */
             }
-            
-            .collection-header {
-                display: flex;
-                align-items: center;
-                /* margin-bottom: 10px; */
-            }
-            
-            .brand-logo {
-                width: 50%;
-            }
-            
-            .brand-logo img {
-                height: 40px;
-                width: auto;
-            }
-            
-            .collection-title {
-                width: 50%;
-                padding-left: 15px;
-            }
-            
-            .collection-title img {
-                height: 30px;
-                width: auto;
-            }
-            
-            .collection-title p {
-                font-size: 14px;
-                color: #333;
-                margin: 0;
-            }
-            
-            .collection-image {
-                margin-bottom: 10px;
+
+            .brand-item {
                 overflow: hidden;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                /* border-radius: 5px; */
+                /* box-shadow: 0 2px 8px rgba(0,0,0,0.1); */
+                transition: transform 0.3s;
+                margin-top: 20px;
             }
-            
-            .collection-image img {
+
+            .brand-item:hover {
+                transform: translateY(-5px);
+            }
+
+            .brand-item img {
                 width: 100%;
                 height: auto;
                 display: block;
-                transition: transform 0.5s;
             }
-            
-            .collection-image:hover img {
-                transform: scale(1.02);
-            }
-            
             /* フッター */
             footer {
                 background-color: #f8f8f8;
@@ -444,25 +429,63 @@
                 </div>
             </div>
             
+            <!-- ドットナビゲーションの修正 -->
             <div class="slider-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot active"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
+                <div class="dot">
+                    <span class="dot-number">1</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">2</span>
+                </div>
+                <div class="dot active">
+                    <span class="dot-number">3</span>
+                </div>
+                <!-- 以下同様に18個まで続く -->
+                <div class="dot">
+                    <span class="dot-number">4</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">5</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">6</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">7</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">8</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">9</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">10</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">11</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">12</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">13</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">14</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">15</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">16</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">17</span>
+                </div>
+                <div class="dot">
+                    <span class="dot-number">18</span>
+                </div>
             </div>
             
             <div class="search-container">
@@ -525,17 +548,24 @@
             </div>
             
             <div class="section-container">
-                <h2 class="section-title">Best Sellers</h2>
+                <h2 class="section-title">Pick Up Items
+                </h2>
                 <p class="section-subtitle">おすすめ商品</p>
-                
                 <div class="product-item">
                     <img src="img/4-1.png" alt="ウマ娘 オリジナルウォッチ">
                 </div>
-                
                 <div class="product-item">
                     <img src="img/4-2.png" alt="ストリートファイター × SEIKO コラボレーションウォッチ">
                 </div>
-                
+                <div class="product-item">
+                    <img src="img/4-3.png" alt="ヴァイオレット・エヴァーガーデン SEIKO 機械式腕時計">
+                </div>
+                <div class="product-item">
+                    <img src="img/4-2.png" alt="ストリートファイター × SEIKO コラボレーションウォッチ">
+                </div>
+                <div class="product-item">
+                    <img src="img/4-1.png" alt="ウマ娘 オリジナルウォッチ">
+                </div>
                 <div class="product-item">
                     <img src="img/4-3.png" alt="ヴァイオレット・エヴァーガーデン SEIKO 機械式腕時計">
                 </div>
@@ -552,106 +582,35 @@
                 <div class="brand-description">
                     <img src="img/5-2.png" alt="I・E・Iオリジナルショップとは">
                 </div>
+                <div class="brand-grid">
+                    <!-- 8つの画像を配置 -->
+                    <div class="brand-item">
+                        <img src="img/6-1.png" alt="ブランド1">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/6-2.png" alt="ブランド2">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/6-3.png" alt="ブランド3">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/6-4.png" alt="ブランド4">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/6-5.png" alt="ブランド5">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/6-6.png" alt="ブランド6">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/6-7.png" alt="ブランド7">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/6-8.png" alt="ブランド8">
+                    </div>
+                </div>
             </div>
             
-            <!-- ブロックA -->
-            <div class="collection-block">
-                <div class="collection-header">
-                    <div class="brand-logo">
-                        <img src="img/6-1.png" alt="Charafine">
-                    </div>
-                    <div class="collection-title">
-                        <img src="img/7-1.png" alt="Collections">
-                    </div>
-                </div>
-                <div class="collection-image">
-                    <img src="img/8-1.png" alt="Charafine製品">
-                </div>
-            </div>
-            <div class="collection-block">
-                <div class="collection-header">
-                    <div class="brand-logo">
-                        <img src="img/6-1.png" alt="Charafine">
-                    </div>
-                    <div class="collection-title">
-                        <img src="img/7-1.png" alt="Collections">
-                    </div>
-                </div>
-                <div class="collection-image">
-                    <img src="img/8-1.png" alt="Charafine製品">
-                </div>
-            </div>
-            <div class="collection-block">
-                <div class="collection-header">
-                    <div class="brand-logo">
-                        <img src="img/6-1.png" alt="Charafine">
-                    </div>
-                    <div class="collection-title">
-                        <img src="img/7-1.png" alt="Collections">
-                    </div>
-                </div>
-                <div class="collection-image">
-                    <img src="img/8-1.png" alt="Charafine製品">
-                </div>
-            </div>
-            <!-- ブロックB -->
-            <div class="collection-block">
-                <div class="collection-header">
-                    <div class="brand-logo">
-                        <img src="img/6-2.png" alt="MOOMIN">
-                    </div>
-                    <div class="collection-title">
-                        <p>男性ウオッチ 雑貨</p>
-                    </div>
-                </div>
-                <div class="collection-image">
-                    <img src="img/8-2.png" alt="男性ウオッチ 雑貨">
-                </div>
-            </div>
-
-            <!-- ブロックC -->
-            <div class="collection-block">
-                <div class="collection-header">
-                    <div class="brand-logo">
-                        <img src="img/6-2.png" alt="キャラクターブランド">
-                    </div>
-                    <div class="collection-title">
-                        <p>女性ジュエリー 雑貨</p>
-                    </div>
-                </div>
-                <div class="collection-image">
-                    <img src="img/8-3.png" alt="女性ジュエリー 雑貨">
-                </div>
-            </div>
-            <!-- ブロックB -->
-            <div class="collection-block">
-                <div class="collection-header">
-                    <div class="brand-logo">
-                        <img src="img/6-2.png" alt="MOOMIN">
-                    </div>
-                    <div class="collection-title">
-                        <p>男性ウオッチ 雑貨</p>
-                    </div>
-                </div>
-                <div class="collection-image">
-                    <img src="img/8-2.png" alt="男性ウオッチ 雑貨">
-                </div>
-            </div>
-
-            <!-- ブロックC -->
-            <div class="collection-block">
-                <div class="collection-header">
-                    <div class="brand-logo">
-                        <img src="img/6-2.png" alt="キャラクターブランド">
-                    </div>
-                    <div class="collection-title">
-                        <p>女性ジュエリー 雑貨</p>
-                    </div>
-                </div>
-                <div class="collection-image">
-                    <img src="img/8-3.png" alt="女性ジュエリー 雑貨">
-                </div>
-            </div>
         </main>
         
         <footer>
