@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IE・I ・オリジナルショップ</title>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+        <style>
+            /* リセットCSS */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+                background-color: #fff;
+                color: #333;
+                line-height: 1.6;
+            }
+            
+            /* 共通セクションスタイル */
+            .section-title {
+                text-align: center;
+                font-size: 30px;
+                font-family: 'Playfair Display', serif;
+                margin-bottom: 10px;
+                position: relative;
+            }
+            
+            .section-title:before,
+            .section-title:after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                height: 1px;
+                background-color: #000;
+                width: 60px;
+            }
+            
+            .section-title:before {
+                left: 5%;
+            }
+            
+            .section-title:after {
+                right: 5%;
+            }
+            
+            .section-subtitle {
+                text-align: center;
+                font-size: 12px;
+                color: #666;
+                margin-bottom: 20px;
+            }
+            
+            .section-container {
+                margin: 20px 0px;
+                border-top: 1px solid #eee;
+            }
+            
+            /* ヘッダー */
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 15px;
+                background-color: #fff;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            .logo-container {
+                display: flex;
+                align-items: center;
+            }
+            
+            .logo-container img {
+                height: 30px;
+                margin-right: 5px;
+            }
+            
+            /* ハンバーガーメニュー */
+            .hamburger {
+                width: 30px;
+                height: 24px;
+                position: relative;
+                cursor: pointer;
+            }
+            
+            .hamburger svg {
+                width: 100%;
+                height: 100%;
+            }
+            
+            /* メインスライダー */
+            .main-slider {
+                position: relative;
+                width: 100%;
+                overflow: hidden;
+            }
+            
+            .slider-wrapper {
+                display: flex;
+                transition: transform 0.5s ease;
+            }
+            
+            .slide {
+                min-width: 100%;
+                position: relative;
+            }
+            
+            .slide img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+            
+            /* ドットナビゲーション */
+            .slider-dots {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap; /* 多数のドットを折り返し表示 */
+                margin: 15px 0;
+                max-width: 80%; /* コンテナの幅を制限 */
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background-color: #ccc;
+                margin: 0 5px 5px 0; /* 下部にもマージンを追加 */
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+            
+            .dot.active {
+                background-color: #0052a4;
+            }
+            
+            /* 検索バー */
+            .search-container {
+                margin: 20px 15px;
+                position: relative;
+            }
+            
+            .search-input {
+                width: 100%;
+                padding: 12px 15px;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+                font-size: 16px;
+                transition: border-color 0.3s;
+            }
+            
+            .search-input:focus {
+                outline: none;
+                border-color: #0052a4;
+            }
+            
+            .search-icon {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 20px;
+                height: 20px;
+            }
+            
+            /* ボタンセクション */
+            .button-container {
+                margin: 15px;
+            }
+            
+            .btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                padding: 10px 15px;
+                margin-bottom: 15px;
+                border-radius: 8px;
+                border: none;
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                background: linear-gradient(to right, #f3993a, #ffad56);
+                text-align: center;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            
+            .btn svg {
+                margin-right: 10px;
+                width: 24px;
+                height: 24px;
+            }
+            
+            /* New Arrival セクション */
+            .scrollable-content {
+                max-height: 300px;
+                overflow-y: auto;
+                padding: 0 20px;
+                margin-bottom: 15px;
+                border-radius: 8px;
+                /* background-color: #f9f9f9; */
+            }
+            
+            /* カテゴリーアイテム */
+            .category-item {
+                margin-bottom: 8px;
+                overflow: hidden;
+                background-color: white;
+                border-radius: 4px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+            
+            .category-tag {
+                display: inline-block;
+                color: white;
+                padding: 1px 18px;
+                font-size: 12px;
+                font-weight: bold;
+                border-radius: 4px;
+            }
+            
+            .category-tag.moomin { background-color: #2cba3d; }
+            .category-tag.character { background-color: #e94e8d; }
+            .category-tag.premico { background-color: #0052a4; }
+            .category-tag.mens { background-color: #333; }
+            .category-tag.ladies { background-color: #9c2760; }
+            
+            .category-item p {
+                padding: 4px 12px;
+                font-size: 14px;
+                background-color: white;
+                text-align: left;
+                margin: 0;
+                border-bottom: 1px solid #f5f5f5;
+            }
+            
+            /* Best Sellers セクション */
+            .product-item {
+                margin: 0 0px 20px 0px;
+                /* border-radius: 8px; */
+                overflow: hidden;
+                /* box-shadow: 0 2px 5px rgba(0,0,0,0.05); */
+                transition: transform 0.3s;
+            }
+            
+            .product-item:hover {
+                transform: translateY(-5px);
+            }
+            
+            .product-item img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+            
+            .contact-section,
+            .brand-description {
+                margin: 20px 10px;
+                text-align: center;
+            }
+
+            .contact-section img,
+            .brand-description img {
+                width: 100%;
+                max-width: 400px;
+                height: auto;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            }
+            
+            /* コレクションブロック */
+            .collection-block {
+                margin: 0px 0px 30px;
+            }
+            
+            .collection-header {
+                display: flex;
+                align-items: center;
+                /* margin-bottom: 10px; */
+            }
+            
+            .brand-logo {
+                width: 50%;
+            }
+            
+            .brand-logo img {
+                height: 40px;
+                width: auto;
+            }
+            
+            .collection-title {
+                width: 50%;
+                padding-left: 15px;
+            }
+            
+            .collection-title img {
+                height: 30px;
+                width: auto;
+            }
+            
+            .collection-title p {
+                font-size: 14px;
+                color: #333;
+                margin: 0;
+            }
+            
+            .collection-image {
+                margin-bottom: 10px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            
+            .collection-image img {
+                width: 100%;
+                height: auto;
+                display: block;
+                transition: transform 0.5s;
+            }
+            
+            .collection-image:hover img {
+                transform: scale(1.02);
+            }
+            
+            /* フッター */
+            footer {
+                background-color: #f8f8f8;
+                padding: 20px 15px;
+                text-align: center;
+                margin-top: 40px;
+                border-top: 1px solid #eee;
+            }
+            
+            footer p {
+                font-size: 12px;
+                color: #666;
+            }
+            
+            /* レスポンシブ調整 */
+            @media (min-width: 768px) {
+                .section-title:before { left: 30%; }
+                .section-title:after { right: 30%; }
+                
+                .button-container {
+                    display: flex;
+                    gap: 15px;
+                }
+                
+                .btn {
+                    margin-bottom: 0;
+                }
+                
+                .product-item {
+                    max-width: 500px;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="logo-container">
+                <img src="img/1.png" alt="IEロゴ">
+                <img src="img/2.png" alt="PREMICOロゴ">
+            </div>
+            <div class="hamburger">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="#333"/>
+                </svg>
+            </div>
+        </header>
+        
+        <main>
+            <div class="main-slider">
+                <div class="slider-wrapper">
+                    <div class="slide">
+                        <img src="img/3-1.png" alt="スライド1">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-2.png" alt="スライド2">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-3.png" alt="スライド3">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-4.png" alt="スライド4">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-5.png" alt="スライド5">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-6.png" alt="スライド6">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-7.png" alt="スライド7">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-8.png" alt="スライド8">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-9.png" alt="スライド9">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-10.png" alt="スライド10">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-11.png" alt="スライド11">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-12.png" alt="スライド12">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-13.png" alt="スライド13">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-14.png" alt="スライド14">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-15.png" alt="スライド15">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-16.png" alt="スライド16">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-17.png" alt="スライド17">
+                    </div>
+                    <div class="slide">
+                        <img src="img/3-18.png" alt="スライド18">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="商品番号・キーワードで探す">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#666"/>
+                </svg>
+            </div>
+            
+            <div class="button-container">
+                <button class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="white"/>
+                    </svg>
+                    ダイレクトメール・カタログからの注文
+                </button>
+                <button class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="white"/>
+                    </svg>
+                    広告掲載中の商品
+                </button>
+            </div>
+            
+            <div class="section-container">
+                <h2 class="section-title">New Arrival</h2>
+                <p class="section-subtitle">新着のお知らせ</p>
+                
+                <div class="scrollable-content">
+                    <div class="category-item">
+                        <span class="category-tag moomin">ムーミン</span>
+                        <p>ミムラねえさん&リトルミイ 軽量ミニトート</p>
+                    </div>
+                    
+                    <div class="category-item">
+                        <span class="category-tag character">キャラ</span>
+                        <p>MOOMIN スナフキン 旅人のブーツ</p>
+                    </div>
+                    
+                    <div class="category-item">
+                        <span class="category-tag premico">プレミコ</span>
+                        <p>セイコー すみっコぐらし™ × ドクターイエロー コラボウォッチ</p>
+                    </div>
+                    
+                    <div class="category-item">
+                        <span class="category-tag mens">男性時計</span>
+                        <p>ハンティング・ワールド ＜ラグジュアリー・カレント＞ 限定版腕時計</p>
+                    </div>
+                    
+                    <div class="category-item">
+                        <span class="category-tag ladies">女性ジュエリー時計</span>
+                        <p>ご注文はうさぎですか？×INDEPENDENT コラボウォッチ</p>
+                    </div>
+                    
+                    <div class="category-item">
+                        <span class="category-tag premico">プレミコ</span>
+                        <p>コードギアス 反逆のルルーシュ 西瓜織の長財布</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-container">
+                <h2 class="section-title">Best Sellers</h2>
+                <p class="section-subtitle">おすすめ商品</p>
+                
+                <div class="product-item">
+                    <img src="img/4-1.png" alt="ウマ娘 オリジナルウォッチ">
+                </div>
+                
+                <div class="product-item">
+                    <img src="img/4-2.png" alt="ストリートファイター × SEIKO コラボレーションウォッチ">
+                </div>
+                
+                <div class="product-item">
+                    <img src="img/4-3.png" alt="ヴァイオレット・エヴァーガーデン SEIKO 機械式腕時計">
+                </div>
+            </div>
+            
+            <div class="contact-section">
+                <img src="img/5-1.png" alt="お電話でのお申し込み/お問い合わせ">
+            </div>
+            
+            <div class="section-container">
+                <h2 class="section-title">About Brands</h2>
+                <p class="section-subtitle">ハウスブランド</p>
+                
+                <div class="brand-description">
+                    <img src="img/5-2.png" alt="I・E・Iオリジナルショップとは">
+                </div>
+            </div>
+            
+            <!-- ブロックA -->
+            <div class="collection-block">
+                <div class="collection-header">
+                    <div class="brand-logo">
+                        <img src="img/6-1.png" alt="Charafine">
+                    </div>
+                    <div class="collection-title">
+                        <img src="img/7-1.png" alt="Collections">
+                    </div>
+                </div>
+                <div class="collection-image">
+                    <img src="img/8-1.png" alt="Charafine製品">
+                </div>
+            </div>
+            <div class="collection-block">
+                <div class="collection-header">
+                    <div class="brand-logo">
+                        <img src="img/6-1.png" alt="Charafine">
+                    </div>
+                    <div class="collection-title">
+                        <img src="img/7-1.png" alt="Collections">
+                    </div>
+                </div>
+                <div class="collection-image">
+                    <img src="img/8-1.png" alt="Charafine製品">
+                </div>
+            </div>
+            <div class="collection-block">
+                <div class="collection-header">
+                    <div class="brand-logo">
+                        <img src="img/6-1.png" alt="Charafine">
+                    </div>
+                    <div class="collection-title">
+                        <img src="img/7-1.png" alt="Collections">
+                    </div>
+                </div>
+                <div class="collection-image">
+                    <img src="img/8-1.png" alt="Charafine製品">
+                </div>
+            </div>
+            <!-- ブロックB -->
+            <div class="collection-block">
+                <div class="collection-header">
+                    <div class="brand-logo">
+                        <img src="img/6-2.png" alt="MOOMIN">
+                    </div>
+                    <div class="collection-title">
+                        <p>男性ウオッチ 雑貨</p>
+                    </div>
+                </div>
+                <div class="collection-image">
+                    <img src="img/8-2.png" alt="男性ウオッチ 雑貨">
+                </div>
+            </div>
+
+            <!-- ブロックC -->
+            <div class="collection-block">
+                <div class="collection-header">
+                    <div class="brand-logo">
+                        <img src="img/6-2.png" alt="キャラクターブランド">
+                    </div>
+                    <div class="collection-title">
+                        <p>女性ジュエリー 雑貨</p>
+                    </div>
+                </div>
+                <div class="collection-image">
+                    <img src="img/8-3.png" alt="女性ジュエリー 雑貨">
+                </div>
+            </div>
+            <!-- ブロックB -->
+            <div class="collection-block">
+                <div class="collection-header">
+                    <div class="brand-logo">
+                        <img src="img/6-2.png" alt="MOOMIN">
+                    </div>
+                    <div class="collection-title">
+                        <p>男性ウオッチ 雑貨</p>
+                    </div>
+                </div>
+                <div class="collection-image">
+                    <img src="img/8-2.png" alt="男性ウオッチ 雑貨">
+                </div>
+            </div>
+
+            <!-- ブロックC -->
+            <div class="collection-block">
+                <div class="collection-header">
+                    <div class="brand-logo">
+                        <img src="img/6-2.png" alt="キャラクターブランド">
+                    </div>
+                    <div class="collection-title">
+                        <p>女性ジュエリー 雑貨</p>
+                    </div>
+                </div>
+                <div class="collection-image">
+                    <img src="img/8-3.png" alt="女性ジュエリー 雑貨">
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>© 2024 IE・I オリジナルショップ All Rights Reserved.</p>
+        </footer>
+        
+        <script>
+            // スライダーの実装
+            // スライダーの実装
+            document.addEventListener('DOMContentLoaded', function() {
+                const sliderWrapper = document.querySelector('.slider-wrapper');
+                const slides = document.querySelectorAll('.slide');
+                const dots = document.querySelectorAll('.dot');
+                let currentIndex = 2; // 3番目のスライドからスタート（0-indexed）
+                
+                // 初期位置の設定
+                updateSlider();
+                
+                // ドットクリックでスライド切り替え
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        currentIndex = index;
+                        updateSlider();
+                    });
+                });
+                
+                // 自動スライド
+                setInterval(() => {
+                    currentIndex = (currentIndex + 1) % slides.length;
+                    updateSlider();
+                }, 5000);
+                
+                function updateSlider() {
+                    // スライドの移動
+                    sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    
+                    // アクティブドットの更新
+                    dots.forEach((dot, index) => {
+                        if (index === currentIndex) {
+                            dot.classList.add('active');
+                        } else {
+                            dot.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>
