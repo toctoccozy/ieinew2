@@ -659,13 +659,19 @@
         </footer>
         
         <script>
-            // スライダーの実装
-            // スライダーの実装
+            // スライダーの実装（フリック対応）
             document.addEventListener('DOMContentLoaded', function() {
                 const sliderWrapper = document.querySelector('.slider-wrapper');
                 const slides = document.querySelectorAll('.slide');
                 const dots = document.querySelectorAll('.dot');
                 let currentIndex = 2; // 3番目のスライドからスタート（0-indexed）
+                
+                // タッチイベント用の変数
+                let startX = 0;
+                let endX = 0;
+                let isDragging = false;
+                let initialOffset = 0;
+                let timeoutId;
                 
                 // 初期位置の設定
                 updateSlider();
@@ -678,14 +684,145 @@
                     });
                 });
                 
+                // タッチイベントの処理
+                sliderWrapper.addEventListener('touchstart', handleTouchStart, false);
+                sliderWrapper.addEventListener('touchmove', handleTouchMove, false);
+                sliderWrapper.addEventListener('touchend', handleTouchEnd, false);
+                
+                // マウスイベントの処理（PCでも）
+                sliderWrapper.addEventListener('mousedown', handleMouseDown, false);
+                document.addEventListener('mousemove', handleMouseMove, false);
+                document.addEventListener('mouseup', handleMouseUp, false);
+                
                 // 自動スライド
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % slides.length;
+                startAutoSlide();
+                
+                function startAutoSlide() {
+                    timeoutId = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % slides.length;
+                        updateSlider();
+                    }, 5000);
+                }
+                
+                function stopAutoSlide() {
+                    clearInterval(timeoutId);
+                }
+                
+                function resetAutoSlide() {
+                    stopAutoSlide();
+                    startAutoSlide();
+                }
+                
+                // タッチ操作時の処理
+                function handleTouchStart(e) {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                    initialOffset = -currentIndex * 100;
+                    
+                    // 自動スライドを一時停止
+                    stopAutoSlide();
+                }
+                
+                function handleTouchMove(e) {
+                    if (!isDragging) return;
+                    
+                    endX = e.touches[0].clientX;
+                    const diffX = (endX - startX) / window.innerWidth * 100;
+                    
+                    // スワイプに合わせてスライダーを動かす（ただし範囲制限付き）
+                    const newTranslate = Math.max(
+                        -((slides.length - 1) * 100),
+                        Math.min(0, initialOffset + diffX)
+                    );
+                    
+                    sliderWrapper.style.transition = 'none';
+                    sliderWrapper.style.transform = `translateX(${newTranslate}%)`;
+                }
+                
+                function handleTouchEnd() {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    
+                    // スワイプの差分が大きければスライドを変更
+                    const diffX = endX - startX;
+                    const threshold = window.innerWidth * 0.1; // 画面幅の10%以上のスワイプで切り替え
+                    
+                    if (Math.abs(diffX) > threshold) {
+                        if (diffX > 0) {
+                            // 右スワイプ - 前のスライドへ
+                            currentIndex = Math.max(0, currentIndex - 1);
+                        } else {
+                            // 左スワイプ - 次のスライドへ
+                            currentIndex = Math.min(slides.length - 1, currentIndex + 1);
+                        }
+                    }
+                    
+                    // トランジションを戻してスライドを更新
+                    sliderWrapper.style.transition = 'transform 0.5s ease';
                     updateSlider();
-                }, 5000);
+                    
+                    // 自動スライドを再開
+                    resetAutoSlide();
+                }
+                
+                // マウス操作時の処理（PCでも使用可能にする）
+                function handleMouseDown(e) {
+                    e.preventDefault();
+                    startX = e.clientX;
+                    isDragging = true;
+                    initialOffset = -currentIndex * 100;
+                    
+                    // 自動スライドを一時停止
+                    stopAutoSlide();
+                }
+                
+                function handleMouseMove(e) {
+                    if (!isDragging) return;
+                    
+                    endX = e.clientX;
+                    const diffX = (endX - startX) / window.innerWidth * 100;
+                    
+                    // マウスドラッグに合わせてスライダーを動かす
+                    const newTranslate = Math.max(
+                        -((slides.length - 1) * 100),
+                        Math.min(0, initialOffset + diffX)
+                    );
+                    
+                    sliderWrapper.style.transition = 'none';
+                    sliderWrapper.style.transform = `translateX(${newTranslate}%)`;
+                }
+                
+                function handleMouseUp() {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    
+                    // ドラッグの差分が大きければスライドを変更
+                    if (endX) {
+                        const diffX = endX - startX;
+                        const threshold = window.innerWidth * 0.1; // 画面幅の10%以上のドラッグで切り替え
+                        
+                        if (Math.abs(diffX) > threshold) {
+                            if (diffX > 0) {
+                                // 右ドラッグ - 前のスライドへ
+                                currentIndex = Math.max(0, currentIndex - 1);
+                            } else {
+                                // 左ドラッグ - 次のスライドへ
+                                currentIndex = Math.min(slides.length - 1, currentIndex + 1);
+                            }
+                        }
+                    }
+                    
+                    // トランジションを戻してスライドを更新
+                    sliderWrapper.style.transition = 'transform 0.5s ease';
+                    updateSlider();
+                    
+                    // 自動スライドを再開
+                    resetAutoSlide();
+                }
                 
                 function updateSlider() {
                     // スライドの移動
+                    sliderWrapper.style.transition = 'transform 0.5s ease';
                     sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
                     
                     // アクティブドットの更新
