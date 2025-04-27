@@ -74,14 +74,22 @@
             
             .logo-container {
                 display: flex;
-                align-items: center;
+                /* align-items: center; */
             }
             
             .logo-container img {
                 height: 30px;
                 margin-right: 5px;
             }
-            
+            .logo-iei {
+                display: flex;
+            }
+            .logo-iei img:last-child {
+                width: 90px;
+                height: 12px;
+                margin-top: 8px;
+                margin-right: 10px;
+            }
             /* ハンバーガーメニュー */
             .hamburger {
                 width: 30px;
@@ -359,7 +367,10 @@
     <body>
         <header>
             <div class="logo-container">
-                <img src="img/1.png" alt="IEロゴ">
+                <div class="logo-iei">
+                    <img src="img/1.png" alt="IEロゴ">
+                    <img src="img/1-2.png" alt="IEオリジナルショップ">
+                </div>
                 <img src="img/2.png" alt="PREMICOロゴ">
             </div>
             <div class="hamburger">
